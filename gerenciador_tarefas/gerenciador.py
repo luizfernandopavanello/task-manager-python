@@ -38,3 +38,12 @@ def criar(tarefa: TarefaEntrada):
     nova_tarefa.update({"id": uuid4()})
     TAREFAS.append(nova_tarefa)
     return nova_tarefa
+
+@app.delete("/tarefas/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar(id: UUID):
+    for tarefa in TAREFAS:
+        if tarefa["id"] == id:
+            TAREFAS.remove(tarefa)
+            return tarefa
+    return {"erro": "Tarefa não encontrada"}
+
