@@ -167,3 +167,21 @@ def test_quando_deletar_uma_tarefa_deve_retornar_codigo_de_status_204():
     resposta = cliente.delete(f"/tarefas/{resposta.json()['id']}")
     assert resposta.status_code == status.HTTP_204_NO_CONTENT
     TAREFAS.clear()
+
+
+def test_quando_deletar_uma_tarefa_esta_deve_ser_removida():
+    cliente = TestClient(app)
+    tarefa = {"titulo": "titulo", "descricao": "descricao"}
+    resposta = cliente.post("/tarefas", json=tarefa)
+    cliente.delete(f"/tarefas/{resposta.json()['id']}")
+    assert len(TAREFAS) == 0
+    TAREFAS.clear()
+
+
+def test_quando_alterar_estado_de_uma_tarefa_deve_retornar_codigo_de_status_404():
+    cliente = TestClient(app)
+    tarefa = {"titulo": "titulo", "descricao": "descricao"}
+    resposta = cliente.post("/tarefas", json=tarefa)
+    resposta = cliente.put(f"/tarefas/{resposta.json()['id']}/finalizar")
+    assert resposta.status_code == status.HTTP_404_NOT_FOUND
+    TAREFAS.clear()
