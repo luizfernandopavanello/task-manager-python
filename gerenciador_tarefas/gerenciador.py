@@ -1,7 +1,7 @@
 from enum import Enum
 from uuid import UUID, uuid4
 
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, constr
 
 app = FastAPI()
@@ -46,6 +46,7 @@ def detalhar(id: UUID):
         if tarefa["id"] == id:
             return tarefa
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
 
 @app.put("/tarefas/{id}", response_model=Tarefa)
 def atualizar(id: UUID, tarefa: TarefaEntrada):
